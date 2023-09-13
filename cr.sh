@@ -106,8 +106,9 @@ main() {
     update_index
   fi
 
-  latest_tag=$(lookup_latest_tag)
-  echo "chart_version=${latest_tag}" >chart_version.txt
+  local current_tag
+  current_tag=$(lookup_current_tag)
+  echo "chart_version=${current_tag}" >chart_version.txt
 
   popd >/dev/null
 }
@@ -267,6 +268,14 @@ lookup_latest_tag() {
   git fetch --tags >/dev/null 2>&1
 
   if ! git describe --tags --abbrev=0 HEAD~ 2>/dev/null; then
+    git rev-list --max-parents=0 --first-parent HEAD
+  fi
+}
+
+lookup_current_tag() {
+  git fetch --tags >/dev/null 2>&1
+
+  if ! git describe --tags --abbrev=0 2>/dev/null; then
     git rev-list --max-parents=0 --first-parent HEAD
   fi
 }
