@@ -106,7 +106,7 @@ main() {
     update_index
   fi
 
-  echo "chart_version=${latest_tag}" >chart_version.txt
+  echo "chart_version=${lookup_latest_tag}" >chart_version.txt
 
   popd >/dev/null
 }
